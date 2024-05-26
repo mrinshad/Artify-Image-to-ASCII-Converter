@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add your custom styles here */
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">ASCII Art Generator</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-success" role="alert">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="file" name="file" class="form-control-file">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                {% if original_image %}
+                    <h3>Original Image</h3>
+                    <img src="{{ original_image }}" class="img-fluid" alt="Original Image">
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                {% if ascii_art %}
+                    <h3>ASCII Art</h3>
+                    <pre id="ascii-art">{{ ascii_art }}</pre>
+                    <button class="btn btn-primary" onclick="copyAsciiArt()">Copy ASCII Art</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        function copyAsciiArt() {
+            var asciiArt = document.getElementById('ascii-art');
+            var range = document.createRange();
+            range.selectNode(asciiArt);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            alert('ASCII Art copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
